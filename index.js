@@ -63,8 +63,14 @@ var fs = require('fs')
 
       // Check if a value is an Object, if so recursively add it's key/values
       if (typeof value === 'object' && !(value instanceof Array)) {
-        // Update value of object to the one from otherObj
-        obj[key] = merge(obj[key], value);
+
+        // Prevent prototype pollution
+        if (key !== '__proto__' && key !== 'prototype' && key !== 'constructor') {
+          
+          // Update value of object to the one from otherObj
+          obj[key] = merge(obj[key], value);
+        }
+
       }
       // Value is anything other than an Object, so just add it
       else {
